@@ -14,7 +14,7 @@ class HBNBCommand(cmd.Cmd):
     Command interpreter class for the HBNB project.
     """
 
-    prompt = "(hbnb) "  # Prompt displayed for user input
+    prompt = "(hbnb) "
 
     def default(self, line):
         """Handles unrecognized commands."""
@@ -27,17 +27,15 @@ class HBNBCommand(cmd.Cmd):
         Args:
             line (str): The input line entered by the user.
         """
-        # Regular expression pattern to match the command syntax
+
         match = re.search(r"^(\w*)\.(\w+)(?:\(([^)]*)\))$", line)
         if not match:
             return line
 
-        # Extracting class name, method, and arguments from the command
         class_name = match.group(1)
         method = match.group(2)
         args = match.group(3)
 
-        # Handling cases where arguments contain UID and attribute-value pairs
         match_uid_and_args = re.search('^"([^"]*)"(?:, (.*))?$', args)
         if match_uid_and_args:
             uid = match_uid_and_args.group(1)
@@ -46,7 +44,6 @@ class HBNBCommand(cmd.Cmd):
             uid = args
             attr_or_dict_str = False
 
-        # Extracting attribute-value pairs from arguments if method is 'update'
         attr_str = ""
         if method == "update" and attr_or_dict_str:
             match_dict = re.search('^({.*})$', attr_or_dict_str)
@@ -58,7 +55,6 @@ class HBNBCommand(cmd.Cmd):
             if match_attr_and_value:
                 attr_str = (match_attr_and_value.group(1) or "") + " " + (match_attr_and_value.group(2) or "")
 
-        # Constructing the command string to execute
         command = method + " " + class_name + " " + uid + " " + attr_str
         self.one_command(command)
         return command
@@ -72,11 +68,10 @@ class HBNBCommand(cmd.Cmd):
             uid (str): Unique ID of the instance.
             string_dict (str): Dictionary of attributes in string format.
         """
-        # Parsing the string dictionary into a Python dictionary
+
         json_string = string_dict.replace("'", '"')
         dictionary = json.loads(json_string)
 
-        # Checking if class name is provided and exists in the storage
         if not class_name:
             print("** class name missing **")
         elif class_name not in storage.classes():
@@ -85,12 +80,10 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
         else:
             key = "{}.{}".format(class_name, uid)
-            # Checking if instance exists in the storage
             if key not in storage.all():
                 print("** no instance found **")
             else:
                 class_attributes_dict = storage.attributes()[class_name]
-                # Updating attributes of the instance
                 for class_attribute, value in dictionary.items():
                     if class_attribute in class_attributes_dict:
                         value = class_attributes_dict[class_attribute](value)
@@ -223,7 +216,7 @@ class HBNBCommand(cmd.Cmd):
                     try:
                         value = cast(value)
                     except ValueError:
-                        pass  # Fine, stay a string then
+                        pass
                 setattr(storage.all()[key], attribute, value)
                 storage.all()[key].save()
 
