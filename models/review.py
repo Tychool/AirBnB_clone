@@ -1,11 +1,13 @@
 #!/usr/bin/python3
-""" review module"""
+""" This script contains a module that includes a class
+    that handles Reviews
+"""
 
 from models.base_model import BaseModel
 
 
 class Review(BaseModel):
-    """ Review model"""
+    """Class that handles"""
     place_id = ""
     user_id = ""
     text = ""

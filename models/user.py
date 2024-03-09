@@ -1,11 +1,14 @@
 #!/usr/bin/python3
-""" Class user """
+""" This script contains a module that includes
+    a class that handles Users
+"""
 
 from models.base_model import BaseModel
 
 
 class User(BaseModel):
-    """ Class user """
+    """Class to handle User """
+
     email = ""
     password = ""
     first_name = ""

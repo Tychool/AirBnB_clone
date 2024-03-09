@@ -1,11 +1,14 @@
 #!/usr/bin/python3
-""" Class City """
+"""
+This script contians a module that includes class
+to handle Cities
+"""
 
 from models.base_model import BaseModel
 
 
 class City(BaseModel):
-    """Class City"""
+    """Class to handle City"""
 
     state_id = ""
     name = ""
