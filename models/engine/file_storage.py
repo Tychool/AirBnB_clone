@@ -38,29 +38,29 @@ class FileStorage:
         from models.place import Place
         from models.review import Review
 
-        classes = {"BaseModel": BaseModel,
+        class_init = {"BaseModel": BaseModel,
                    "User": User,
                    "State": State,
                    "City": City,
                    "Amenity": Amenity,
                    "Place": Place,
                    "Review": Review}
-        return classes
+        return class_init
 
     def reload(self):
         """Refresh and reload objects from storage"""
         if not os.path.isfile(FileStorage.__file_path):
             return
-        with open(FileStorage.__file_path, "r", encoding="utf-8") as f:
-            obj_dict = json.load(f)
-            obj_dict = {k: self.classes()[v["__class__"]](**v)
-                        for k, v in obj_dict.items()}
-            # TODO: should this overwrite or insert?
-            FileStorage.__objects = obj_dict
+        with open(FileStorage.__file_path, "r", encoding="utf-8") as file_in:
+            object_dict = json.load(file_in)
+            object_dict = {class_instance: self.class_init()[value["__class__"]](**value)
+                        for class_instance, value in object_dict.items()}
+            # TODO: overwrite or insert?
+            FileStorage.__objects = object_dict
 
     def attributes(self):
         """Atributes and class names"""
-        attributes = {
+        instance_attributes = {
             "BaseModel":
                      {"id": str,
                       "created_at": datetime.datetime,
@@ -94,5 +94,5 @@ class FileStorage:
                      "user_id": str,
                      "text": str}
         }
-        return attributes
+        return instance_attributes
 
