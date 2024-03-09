@@ -1,58 +1,75 @@
 #!/usr/bin/python3
-"""This script contains an inheritance class: BaseModel
-For all classes"""
+
+"""
+This module defines a base class BaseModel for all classes to inherit from.
+"""
 
 import uuid
 from uuid import uuid4
-from models import storage
 from datetime import datetime
-
+from models import storage  # Assuming storage is imported from models
 
 class BaseModel:
-    """inheritance class for all classes"""
+    """
+    Base class for all classes to inherit from.
+    """
 
     def __init__(self, *args, **kwargs):
-        """Initialize instance
+        """
+        Initializes a new instance of the BaseModel class.
 
         Args:
-            - *args: Arguments
-            - **kwargs: Key values
+            *args: Positional arguments.
+            **kwargs: Keyword arguments.
         """
 
         if kwargs:
-            for key in kwargs:
+            # Iterate through keyword arguments
+            for key, value in kwargs.items():
+                # Convert created_at and updated_at strings to datetime objects
                 if key == "created_at":
-                    self.__dict__["created_at"] = datetime.strptime(
-                        kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                    self.created_at = datetime.strptime(
+                        value, "%Y-%m-%dT%H:%M:%S.%f"
+                    )
                 elif key == "updated_at":
-                    self.__dict__["updated_at"] = datetime.strptime(
-                        kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                    self.updated_at = datetime.strptime(
+                        value, "%Y-%m-%dT%H:%M:%S.%f"
+                    )
                 else:
-                    self.__dict__[key] = kwargs[key]
+                    # Set other attributes dynamically
+                    setattr(self, key, value)
         else:
+            # Generate a unique ID if no ID is provided
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
             storage.new(self)
 
     def __str__(self):
-        """Official string representation"""
+        """
+        Returns the official string representation of the object.
+        """
 
-        return "[{}] ({}) {}".\
-            format(type(self).__name__, self.id, self.__dict__)
+        return "[{}] ({}) {}".format(
+            type(self).__name__, self.id, self.__dict__
+        )
 
     def save(self):
-        """Update and serialize updated_at"""
+        """
+        Updates and serializes the updated_at attribute.
+        """
 
         self.updated_at = datetime.now()
         storage.save()
 
     def to_dict(self):
-        """Dictionary of keys in __dict__"""
+        """
+        Returns a dictionary representation of the object.
+        """
 
-        my_dict = self.__dict__.copy()
-        my_dict["__class__"] = type(self).__name__
-        my_dict["created_at"] = my_dict["created_at"].isoformat()
-        my_dict["updated_at"] = my_dict["updated_at"].isoformat()
-        return my_dict
+        object_dict = self.__dict__.copy()
+        object_dict["__class__"] = type(self).__name__
+        object_dict["created_at"] = object_dict["created_at"].isoformat()
+        object_dict["updated_at"] = object_dict["updated_at"].isoformat()
+        return object_dict
 
