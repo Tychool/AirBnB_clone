@@ -1,11 +1,9 @@
 #!/usr/bin/python3
-"""This script contains a module for HBNB command interpreter
-for the HBNB project - Airbnb cloning
+"""This script contains module for HBNB command interpreter
 """
 import cmd
 import json
 import re
-import models
 from models import storage
 from models.base_model import BaseModel
 
