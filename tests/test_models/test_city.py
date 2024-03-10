@@ -16,7 +16,7 @@ class TestCity(unittest.TestCase):
         """ Set up an instance of City and its attributes """
         cls.city_instance = City()
         cls.city_instance.name = "Kano"
-        cls.city_instance.state_id = "Kano"
+        cls.city_instance.state_id = "KanoNG"
 
     @classmethod
     def tearDownClass(cls):
