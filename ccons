@@ -2,14 +2,12 @@
 """This script contains a module for HBNB command interpreter
 for the HBNB project - Airbnb cloning
 """
-
 import cmd
 import json
 import re
-
 import models
 from models import storage
-
+from models.base_model import BaseModel
 
 class HBNBCommand(cmd.Cmd):
     """
@@ -55,9 +53,7 @@ class HBNBCommand(cmd.Cmd):
             match_attr_and_value = re.search(
                 '^(?:"([^"]*)")?(?:, (.*))?$', attr_or_dict_str)
             if match_attr_and_value:
-                attr_str = (
-                    match_attr_and_value.group(1) or "") + " " + (
-                    match_attr_and_value.group(2) or "")
+                attr_str = (match_attr_and_value.group(1) or "") + " " + (match_attr_and_value.group(2) or "")
 
         command = method + " " + class_name + " " + uid + " " + attr_str
         self.one_command(command)
