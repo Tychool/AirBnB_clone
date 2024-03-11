@@ -37,7 +37,7 @@ class TestCity(unittest.TestCase):
         pep8_errors = pep8_style_checker.check_files(['models/city.py'])
         self.assertEqual(pep8_errors.total_errors, 0, "Fails PEP8")
 
-   def test_subclass_of_base_model(self):
+    def test_subclass_of_base_model(self):
         """ Check if instance is a subclass of BaseModel """
         self.setUpClass()
         sub_class = self.city_instance.__class__
