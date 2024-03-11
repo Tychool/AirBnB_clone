@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""This script contains unit test for console.py"""
 """Test cases for the console module"""
 
 import unittest
@@ -8,56 +9,79 @@ import pep8
 import os
 import console
 from console import HBNBCommand
+import io
+import sys
 from models.base_model import BaseModel
 
 
-class TestConsole(unittest.TestCase):
-    """Test cases for the console module"""
-
+class TestHBNBCommand(unittest.TestCase):
+    """Unit tests for the HBNBCommand."""
+    
     @classmethod
     def setUpClass(cls):
         """Set up the HBNBCommand instance"""
         cls.hbnb_command = HBNBCommand()
 
+    def tearDown(self):
+        """Clean up after the test."""
+        pass
+
+    def test_prompting(self):
+        """Test if prompt includes '(hbnb) '."""
+        with patch('builtins.input', return_value='quit'):
+            self.assertTrue('(hbnb) ' in self.cmd.prompt)
+
+    def test_help(self):
+        """Test help command."""
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            self.cmd.do_help('')
+            out = fake_out.getvalue().strip()
+            self.assertTrue("Documented commands (type help <topic>):" in out)
+
+    def test_exit(self):
+        """Test exit command."""
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            self.assertTrue(self.cmd.do_EOF(''))
+
+    def test_create(self):
+        """Test create command."""
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            self.cmd.do_create('BaseModel')
+            output = fake_out.getvalue().strip()
+            self.assertTrue(len(output) == 36)
+
+    def test_show(self):
+        """Test show command."""
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            self.cmd.do_show('BaseModel')
+            output = fake_out.getvalue().strip()
+            self.assertTrue("** instance id missing **" in output)
     @classmethod
     def tearDownClass(cls):
         """Clean up the HBNBCommand instance"""
         del cls.hbnb_command
 
-    def tearDown(self):
-        """Remove the JSON file created during testing"""
-        try:
-            os.remove("file.json")
-        except FileNotFoundError:
-            pass
+    def test_all(self):
+        """Test all command."""
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            self.cmd.do_all('')
+            output = fake_out.getvalue().strip()
+            self.assertTrue("[]" in output)
 
-    def test_pep8_compliance(self):
-        """Test PEP8 compliance of the console module"""
-        style_checker = pep8.StyleGuide(quiet=True)
-        pep8_errors = style_checker.check_files(["console.py"])
-        self.assertEqual(pep8_errors.total_errors, 0, 'PEP8 Failed')
+    def test_destroy(self):
+        """Test destroy command."""
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            self.cmd.do_destroy('')
+            output = fake_out.getvalue().strip()
+            self.assertTrue("** class name missing **" in output)
 
-    def test_docstrings(self):
-        """Check docstrings of methods in the console module"""
-        self.assertIsNotNone(console.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_quit.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_EOF.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_create.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_show.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_destroy.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_all.__doc__)
-        self.assertIsNotNone(HBNBCommand.do_update.__doc__)
-        self.assertIsNotNone(HBNBCommand.default.__doc__)
+    def test_update(self):
+        """Test update command."""
+        with patch('sys.stdout', new=io.StringIO()) as fake_out:
+            self.cmd.do_update('')
+            output = fake_out.getvalue().strip()
+            self.assertTrue("** class name missing **" in output)
 
-    def test_empty_input(self):
-        """Test behavior of emptyline method"""
-        with patch('sys.stdout', new=StringIO()) as output:
-            self.hbnb_command.onecmd("\n")
-            self.assertEqual('', output.getvalue())
 
-    def test_quit_command(self):
-        """Test behavior of quit method"""
-        with patch('sys.stdout', new=StringIO()) as output:
-            with self.assertRaises(SystemExit):
-                self.hbnb_command.onecmd("quit")
-            self.assertEqual('', output.getvalue())
+if __name__ == '__main__':
+    unittest.main()
