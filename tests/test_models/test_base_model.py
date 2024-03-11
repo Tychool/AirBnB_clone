@@ -54,7 +54,9 @@ class TestBaseModel(unittest.TestCase):
         """ check consitency of serialization: """
         self.setUpClass()
         self.assertTrue(isinstance(self.base_model_instance, BaseModel))
-        self.assertEqual(self.base_model_instance.created_at, self.base_model_instance.updated_at)
+        created = self.base_model_instance.created_at
+        updated = self.base_model_instance.updated_at
+        self.assertEqual(created, updated)
 
 
 if __name__ == '__main__':
