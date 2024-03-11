@@ -48,6 +48,6 @@ class TestCity(unittest.TestCase):
         self.city_instance.save()
         self.assertNotEqual(self.city_instance.created_at, self.city_instance.updated_at)
 
+
 if __name__ == '__main__':
     unittest.main()
-
