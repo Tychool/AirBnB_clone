@@ -56,6 +56,6 @@ class TestPlace(unittest.TestCase):
         self.place_instance.save()
         self.assertNotEqual(self.place_instance.created_at, self.place_instance.updated_at)
 
+
 if __name__ == '__main__':
     unittest.main()
-
