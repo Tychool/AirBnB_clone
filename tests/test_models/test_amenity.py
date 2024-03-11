@@ -46,6 +46,6 @@ class TestAmenity(unittest.TestCase):
         self.amenity_instance.save()
         self.assertNotEqual(self.amenity_instance.created_at, self.amenity_instance.updated_at)
 
+
 if __name__ == '__main__':
     unittest.main()
-
