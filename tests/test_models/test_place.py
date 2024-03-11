@@ -54,7 +54,7 @@ class TestPlace(unittest.TestCase):
         """ Test the functionality of the save method """
         self.setUpClass()
         self.place_instance.save()
-        self.assertNotEqual(self.place_instance.created_at, self.place_instance.updated_at)
+        self.assertNotEqual(self.place_instance.created_at, self.place_instance.updated_at)       
 
 
 if __name__ == '__main__':
