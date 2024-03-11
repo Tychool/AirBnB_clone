@@ -38,15 +38,15 @@ class TestAmenity(unittest.TestCase):
     def test_subclass_of_base_model(self):
         """ Check if instance is a subclass of BaseModel """
         self.setUpClass()
-        sub_class = self.state_instance.__class__
+        sub_class = self.amenity_instance.__class__
         self.assertTrue(issubclass(sub_class, BaseModel), True)
 
     def test_save_method(self):
         """ Test the functionality of the save method """
         self.setUpClass()
-        self.state_instance.save()
-        created = self.state_instance.created_at
-        updated = self.state_instance.updated_at
+        self.amenity_instance.save()
+        created = self.amenity_instance.created_at
+        updated = self.amenity_instance.updated_at
         self.assertNotEqual(created, updated)
 
 
