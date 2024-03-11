@@ -39,7 +39,7 @@ class TestFileStorage(unittest.TestCase):
     def test_pep8(self):
         """ Tests this script for PEP8 styling """
         style_checker = pep8.StyleGuide(quiet=True)
-        pep8_errors = style_checker.check_files(['models/engine/file_storage.py'])
+        errors8 = style_checker.check_files(['models/engine/file_storage.py'])
         self.assertEqual(pep8_errors.total_errors, 0, "Fails PEP8")
 
     def test_all_method(self):
@@ -48,7 +48,8 @@ class TestFileStorage(unittest.TestCase):
         instance_dict = file_storage_instance.all()
         self.assertIsNotNone(instance_dict)
         self.assertEqual(type(instance_dict), dict)
-        self.assertIs(instance_dict, file_storage_instance._FileStorage__objects)
+        fs_object = file_storage_instance._FileStorage__objects
+        self.assertIs(instance_dict, fs_object)
 
     def test_new_method(self):
         """ Tests new() method """
@@ -74,6 +75,6 @@ class TestFileStorage(unittest.TestCase):
         reloaded_data = file_storage_instance.reload()
         self.assertTrue(reloaded_data is file_storage_instance.reload())
 
+
 if __name__ == '__main__':
     unittest.main()
-
