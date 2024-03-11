@@ -5,7 +5,6 @@
 import unittest
 from unittest.mock import patch
 from io import StringIO
-import pep8
 import os
 import console
 from console import HBNBCommand
